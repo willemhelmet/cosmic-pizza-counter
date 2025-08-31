@@ -14709,7 +14709,7 @@ void main() {
         }
     }
     const dp = "modulepreload", fp = function(i) {
-        return "/" + i;
+        return "/cosmic-pizza-counter/" + i;
     }, no = {}, pp = function(e, t, n) {
         let r = Promise.resolve();
         if (t && t.length > 0) {
