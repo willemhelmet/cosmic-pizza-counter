@@ -14723,30 +14723,38 @@ void main() {
         createRigidBody(e, t, n) {
             if (!this.world || !this.RAPIER) {
                 const l = {
-                    translation: ()=>t,
+                    x: 0,
+                    y: 0,
+                    z: 0
+                }, h = {
+                    translation: ()=>({
+                            x: e.position.x,
+                            y: e.position.y,
+                            z: e.position.z
+                        }),
                     rotation: ()=>({
                             x: 0,
                             y: 0,
                             z: 0,
                             w: 1
                         }),
-                    linvel: ()=>({
-                            x: 0,
-                            y: 0,
-                            z: 0
-                        }),
+                    linvel: ()=>l,
                     angvel: ()=>({
                             x: 0,
                             y: 0,
                             z: 0
                         }),
-                    applyImpulse: ()=>{},
+                    applyImpulse: (d)=>{
+                        l.x += d.x * .1, l.y += d.y * .1, l.z += d.z * .1;
+                    },
                     applyTorqueImpulse: ()=>{},
-                    setTranslation: (h)=>{
-                        t.set(h.x, h.y, h.z);
-                    }
+                    setTranslation: (d)=>{
+                        e.position.set(d.x, d.y, d.z);
+                    },
+                    velocity: l,
+                    mesh: e
                 };
-                return this.meshToBody.set(e, l), this.bodyToMesh.set(l, e), l;
+                return this.meshToBody.set(e, h), this.bodyToMesh.set(h, e), h;
             }
             const r = lp[n], s = this.RAPIER.RigidBodyDesc.dynamic().setTranslation(t.x, t.y, t.z).setLinearDamping(r.linearDamping).setAngularDamping(r.angularDamping), o = this.world.createRigidBody(s);
             let a;
@@ -14797,6 +14805,10 @@ void main() {
             });
         }
         isSettled(e, t = .1) {
+            if (!this.world) {
+                const a = e;
+                return a.velocity ? Math.sqrt(a.velocity.x ** 2 + a.velocity.y ** 2 + a.velocity.z ** 2) < t : !0;
+            }
             const n = e.linvel(), r = e.angvel(), s = Math.sqrt(n.x ** 2 + n.y ** 2 + n.z ** 2), o = Math.sqrt(r.x ** 2 + r.y ** 2 + r.z ** 2);
             return s < t && o < t;
         }
@@ -14817,8 +14829,12 @@ void main() {
             t && this.world && (this.world.removeRigidBody(t), this.meshToBody.delete(e), this.bodyToMesh.delete(t));
         }
         simulateSimplePhysics(e) {
-            this.bodyToMesh.forEach((t)=>{
-                t.position.y > .3 && (t.position.y -= 9.81 * e * e, t.position.y < .3 && (t.position.y = .3));
+            this.bodyToMesh.forEach((t, n)=>{
+                if (!n.velocity) return;
+                if (n.velocity.y -= 9.81 * e, t.position.x += n.velocity.x * e, t.position.y += n.velocity.y * e, t.position.z += n.velocity.z * e, t.position.y <= .3 && (t.position.y = .3, n.velocity.y = 0, n.velocity.x *= .9, n.velocity.z *= .9), Math.sqrt(t.position.x * t.position.x + t.position.z * t.position.z) > 2.4) {
+                    const s = Math.atan2(t.position.z, t.position.x);
+                    t.position.x = Math.cos(s) * 2.4, t.position.z = Math.sin(s) * 2.4, n.velocity.x *= -.5, n.velocity.z *= -.5;
+                }
             });
         }
         dispose() {
