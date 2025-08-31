@@ -16400,15 +16400,15 @@ End with: "Lucky numbers: [5 numbers between 1-49 based on patterns]"`;
       `) : (t.classList.add("empty"), t.textContent = "Select an ingredient to begin"));
         }
         setupControls() {
-            const e = document.getElementById("shake-btn"), t = document.getElementById("bake-btn"), n = document.getElementById("reset-btn"), r = document.getElementById("screenshot-btn");
+            const e = document.getElementById("bake-btn"), t = document.getElementById("reset-btn"), n = document.getElementById("screenshot-btn"), r = document.getElementById("close-fortune");
             e?.addEventListener("click", ()=>{
-                this.physicsWorld.shakePizza(5);
-            }), t?.addEventListener("click", ()=>{
                 this.bakePizza();
-            }), n?.addEventListener("click", ()=>{
+            }), t?.addEventListener("click", ()=>{
                 this.reset();
-            }), r?.addEventListener("click", ()=>{
+            }), n?.addEventListener("click", ()=>{
                 this.takeScreenshot();
+            }), r?.addEventListener("click", ()=>{
+                this.closeFortune();
             });
         }
         setupClickHandlers() {
@@ -16480,22 +16480,28 @@ End with: "Lucky numbers: [5 numbers between 1-49 based on patterns]"`;
                 droppedIngredients: n,
                 chaosScore: Math.random() * 100,
                 symmetryScore: Math.random() * 100,
-                stackHeight: Math.max(...n.map((l)=>l.position.y)),
+                stackHeight: Math.max(...n.map((d)=>d.position.y)),
                 totalCollisions: this.physicsWorld.getTotalCollisions(),
                 createdAt: new Date
             }, s = this.fortuneGenerator.analyzePhysics(r), o = await this.fortuneGenerator.generateFortune(r, s), a = document.getElementById("fortune-text"), c = document.getElementById("lucky-numbers");
-            a && c && (a.textContent = o.generalReading, c.innerHTML = "", o.luckyNumbers.forEach((l, h)=>{
-                const d = document.createElement("div");
-                d.className = "lucky-number", d.style.setProperty("--i", h.toString()), d.textContent = l.toString(), c.appendChild(d);
-            })), e.classList.remove("hidden"), setTimeout(()=>{
+            a && c && (a.textContent = o.generalReading, c.innerHTML = "", o.luckyNumbers.forEach((d, p)=>{
+                const m = document.createElement("div");
+                m.className = "lucky-number", m.style.setProperty("--i", p.toString()), m.textContent = d.toString(), c.appendChild(m);
+            }));
+            const l = document.getElementById("ingredient-panel"), h = document.getElementById("controls");
+            l && (l.style.display = "none"), h && (h.style.display = "none"), e.classList.remove("hidden"), setTimeout(()=>{
                 t.disabled = !1;
             }, 2e3);
         }
-        reset() {
-            this.ingredientSpawner.clearAllIngredients();
+        closeFortune() {
             const e = document.getElementById("fortune-display");
-            e && e.classList.add("hidden"), document.querySelectorAll(".ingredient-card").forEach((t)=>{
-                t.classList.remove("selected");
+            e && e.classList.add("hidden");
+            const t = document.getElementById("ingredient-panel"), n = document.getElementById("controls");
+            t && (t.style.display = ""), n && (n.style.display = "");
+        }
+        reset() {
+            this.ingredientSpawner.clearAllIngredients(), this.closeFortune(), document.querySelectorAll(".ingredient-card").forEach((e)=>{
+                e.classList.remove("selected");
             }), this.selectedIngredient = null, document.body.classList.remove("has-ingredient"), this.updateSelectedDisplay(null), this.previewMesh && (this.sceneManager.removeObject(this.previewMesh), this.previewMesh = null);
         }
         takeScreenshot() {
