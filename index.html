@@ -1,0 +1,92 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/pizza.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Pizza Fortune Teller 3D</title>
+    <link rel="stylesheet" href="/src/style.css">
+  </head>
+  <body>
+    <div id="app">
+      <div id="scene-container"></div>
+      
+      <div id="ui-overlay">
+        <!-- New Ingredient Panel -->
+        <div id="ingredient-panel">
+          <h2>✨ Mystical Ingredients ✨</h2>
+          
+          <!-- Category Tabs -->
+          <div class="category-tabs">
+            <div class="category-tab active" data-category="all">All</div>
+            <div class="category-tab" data-category="normal">Normal</div>
+            <div class="category-tab" data-category="bizarre">Bizarre</div>
+            <div class="category-tab" data-category="special">Special</div>
+          </div>
+          
+          <!-- Search Bar -->
+          <input type="text" class="ingredient-search" placeholder="Search ingredients...">
+          
+          <!-- Ingredient Grid -->
+          <div id="ingredient-grid"></div>
+          
+          <!-- Selected Display -->
+          <div class="selected-display empty">
+            Select an ingredient to begin
+          </div>
+        </div>
+        
+        <div id="controls">
+          <button id="shake-btn" class="control-btn">🫨 Shake</button>
+          <button id="bake-btn" class="control-btn">🔥 Bake</button>
+          <button id="reset-btn" class="control-btn">🔄 Reset</button>
+          <button id="screenshot-btn" class="control-btn">📸 Share</button>
+        </div>
+        
+        <div id="fortune-display" class="hidden">
+          <div class="fortune-content">
+            <h2>Your Pizza Fortune</h2>
+            <p id="fortune-text"></p>
+            <div id="lucky-numbers"></div>
+          </div>
+        </div>
+      </div>
+      
+      <div id="loading-screen">
+        <div class="spinner"></div>
+        <p>Preparing the mystical kitchen...</p>
+      </div>
+      
+      <!-- Onboarding Splash Screen -->
+      <div id="splash-screen">
+        <div class="splash-content">
+          <h1>🍕 Pizza Fortune Teller 🔮</h1>
+          <div class="splash-text">
+            <p>Welcome, seeker of cosmic wisdom!</p>
+            <p>Your pizza choices reveal deep truths about your soul...</p>
+            
+            <div class="instructions">
+              <div class="instruction-item">
+                <span class="step">1.</span> Choose ingredients from the mystical panel
+              </div>
+              <div class="instruction-item">
+                <span class="step">2.</span> Click on the pizza to place them
+              </div>
+              <div class="instruction-item">
+                <span class="step">3.</span> Each ingredient represents hidden aspects of your psyche
+              </div>
+              <div class="instruction-item">
+                <span class="step">4.</span> When ready, click "Bake" to divine your fortune
+              </div>
+            </div>
+            
+            <p class="warning">⚠️ The pizza knows all. Choose wisely.</p>
+          </div>
+          <button id="start-btn" class="splash-btn">Begin My Journey</button>
+        </div>
+      </div>
+    </div>
+    
+    <script type="module" src="/src/main.ts"></script>
+  </body>
+</html>
