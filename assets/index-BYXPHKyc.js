@@ -14591,7 +14591,7 @@ void main() {
         }
     }
     const ap = "modulepreload", op = function(i) {
-        return "/vibe-with-bryce/" + i;
+        return "/cosmic-pizza-counter/" + i;
     }, eo = {}, cp = function(e, t, n) {
         let r = Promise.resolve();
         if (t && t.length > 0) {
